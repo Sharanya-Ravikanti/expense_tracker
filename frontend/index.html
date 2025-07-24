@@ -165,7 +165,7 @@ createApp({
   methods: {
     fetchExpenses() {
       this.loading = true;
-      let url = 'http://127.0.0.1:5000/expenses';
+      let url = 'https://expense-tracker-43wj.onrender.com/expenses';
       const params = [];
       if (this.filterCategory) params.push(`category=${encodeURIComponent(this.filterCategory)}`);
       if (this.filterDate) params.push(`date=${encodeURIComponent(this.filterDate)}`);
@@ -186,7 +186,7 @@ createApp({
       };
       this.loading = true;
       if (this.editId) {
-        fetch(`http://127.0.0.1:5000/update-expense/${this.editId}`, {
+        fetch(`https://expense-tracker-43wj.onrender.com/update-expense/${this.editId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
@@ -194,7 +194,7 @@ createApp({
         .then(res => res.ok ? this.showAlert('Expense updated!', 'alert-success') : this.showAlert('Update failed', 'alert-danger'))
         .finally(() => { this.resetForm(); this.fetchExpenses(); });
       } else {
-        fetch('http://127.0.0.1:5000/add-expense', {
+        fetch('https://expense-tracker-43wj.onrender.com/add-expense', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
@@ -213,7 +213,7 @@ createApp({
     deleteExpense(id) {
       if (!confirm('Delete this expense?')) return;
       this.loading = true;
-      fetch(`http://127.0.0.1:5000/delete-expense/${id}`, {
+      fetch(`https://expense-tracker-43wj.onrender.com/delete-expense/${id}`, {
         method: 'DELETE'
       })
       .then(res => res.ok ? this.showAlert('Expense deleted!', 'alert-success') : this.showAlert('Delete failed', 'alert-danger'))
