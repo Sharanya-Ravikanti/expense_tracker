@@ -10,12 +10,14 @@ CORS(app)
 @app.route('/')
 def home():
     return "Flask server is running!"
-
+@app.route('/init-db')
 def init_db():
+    import sqlite3
     conn = sqlite3.connect('expenses.db')
     c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS expenses (
-        id INTEGER PRIMARY KEY,
+    c.execute('DROP TABLE IF EXISTS expenses')
+    c.execute('''CREATE TABLE expenses (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         amount REAL NOT NULL,
         date TEXT NOT NULL,
@@ -23,6 +25,7 @@ def init_db():
     )''')
     conn.commit()
     conn.close()
+    return "Database initialized!"
 
 @app.route('/add-expense', methods=['POST'])
 def add_expense():
@@ -51,7 +54,7 @@ def get_expenses():
     date_filter = request.args.get('date')
     conn = sqlite3.connect('expenses.db')
     c = conn.cursor()
-    query = "SELECT * FROM expenses"
+    query = "SELECT id, title, amount, date, category FROM expenses"
     params = []
     if category and date_filter:
         query += " WHERE category = ? AND date = ?"
